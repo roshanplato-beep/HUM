@@ -1,0 +1,30 @@
+[
+  {
+    "id": "kitchen_mixer",
+    "name": "Kitchen Mixer",
+    "appliance_type": "mixer",
+    "brand": "YourBrand (placeholder)",
+    "model": "MX-500 (placeholder)",
+    "purchase_date": "2026-01-20",
+    "warranty_months": 24,
+    "service_number": "1800-000-0000 (placeholder)",
+    "technician": {
+      "name": "Ravi (placeholder technician)",
+      "phone": "910000000000"
+    }
+  },
+  {
+    "id": "washing_machine",
+    "name": "Washing Machine",
+    "appliance_type": "washing_machine",
+    "brand": "YourBrand (placeholder)",
+    "model": "WM-7 (placeholder)",
+    "purchase_date": "2023-06-15",
+    "warranty_months": 24,
+    "service_number": "1800-000-0000 (placeholder)",
+    "technician": {
+      "name": "Suresh (placeholder technician)",
+      "phone": "910000000001"
+    }
+  }
+]

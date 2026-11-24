@@ -1,0 +1,103 @@
+# Hum: Video Pitch Script
+
+**wHACKiest 2026 · Track 01: Make MCP Matter · Team [TEAM_NAME]**
+
+- **Target length:** 3:45 (allowed range 3:00–5:00; aim for 3:30–4:00)
+- **Spoken words:** about 520, which runs about 3:45 at 140 words per minute including the demo pauses
+- **Format:** face cam or voice-over for sections 1–3 and 5–7; full-screen Claude Desktop for section 4
+- **Upload:** YouTube, **Unlisted** (or Public)
+
+> Honesty rules for the whole video: the demo clips are **synthetic** and we say so. Results are **"possible causes, not a diagnosis."** No statistics or rupee figures. The ElevenLabs phone voice agent and AWS hosting are **roadmap**, not built. The demo client is **Claude Desktop**; any MCP client works.
+
+---
+
+## 1. Hook (0:00–0:20)
+
+| On screen | Spoken |
+|---|---|
+| Black screen, then a 2-second clip of a mixer running (or play `samples/mixer_healthy.wav` over a photo of a kitchen). Title card fades in: **Hum: every machine hums before it breaks.** | "Every machine hums before it breaks. Your mixer, your washing machine, your AC: they almost always start sounding different before they stop working. The problem is, nobody's listening." |
+
+## 2. Problem (0:20–0:50)
+
+| On screen | Spoken |
+|---|---|
+| Three simple icons appear one by one: 🔊 "a new noise" → 💥 "sudden breakdown" → 🧾 "warranty never checked". | "Here's what usually happens. The machine starts making a new noise. We get used to it. Then one day it breaks, right when we need it. We wait days for a technician, pay for the repair, and only later find out it was still under warranty and could have been fixed for free. The warning was there the whole time. We just had no easy way to hear it, or to act on it." |
+
+## 3. Solution (0:50–1:20)
+
+| On screen | Spoken |
+|---|---|
+| Slide: **Hum = an MCP server that gives your AI assistant ears and hands.** Four steps animate in: **1 Listen · 2 Judge · 3 Check warranty · 4 Act (with your yes).** | "Hum is an MCP server. It gives any MCP-capable AI assistant ears and hands for your home appliances. You record about ten seconds of the machine and say, in plain words, 'my mixer sounds off.' Hum listens and compares it with that appliance's own healthy sound. It judges, with a health score and possible causes. It checks your warranty. And it acts in your apps, but only after you say yes." |
+
+## 4. Live demo in Claude Desktop (1:20–2:30)
+
+Full-screen Claude Desktop. Show the 🔨 tools icon with the Hum tools listed for one second before typing. Type each prompt exactly as written; pause on each tool result so viewers can read it.
+
+**Setup already done off camera** (mention it once on screen as a caption): `Kitchen Mixer` registered via `register_appliance` (mixer, about 10 months old, 24-month warranty), baseline set via `set_baseline` from `samples/mixer_healthy.wav`.
+
+| # | On screen (type this into Claude Desktop) | Tools you should see called | Spoken |
+|---|---|---|---|
+| 4a | `Show my appliances.` | `list_appliances` | "Hum already knows my Kitchen Mixer. We recorded a healthy baseline when it was working fine." |
+| 4b | `Quick check: my mixer sounds normal today. Scan samples/mixer_healthy_2.wav` | `scan_appliance` | "First, a normal day. A different healthy recording scores about 92. Healthy." |
+| 4c | `My mixer sounds off. Check samples/mixer_faulty.wav` | `scan_appliance` | "Now the mixer sounds wrong. Health drops to about 58, level 'Watch'. Hum tells me the change is mostly in the high frequencies, and lists possible causes for a mixer. Possible causes, not a diagnosis." |
+| 4d | `How has it changed over time?` | `get_history` | "The history shows the trend is worsening." |
+| 4e | `Is it still under warranty?` | `check_warranty` | "And here's the money-saver: it's still under warranty, with about fourteen months left. Hum says, call the brand's service line first, before paying a local technician." |
+| 4f | `Set a reminder to call the service centre tomorrow at 10 am.` | `create_reminder` with `confirm=False` | "Hum doesn't just do it. It shows me a preview first." |
+| 4g | `Yes, create it.` | `create_reminder` with `confirm=True` → shows the `.ics` path in `outbox/` and a Google Calendar link | "Only after I say yes does it write the calendar file." *(Double-click the .ics so the calendar app opens it.)* |
+| 4h | `Draft a WhatsApp message to my technician.` then `Looks good, approve it.` | `draft_technician_message` with `confirm=False`, then `confirm=True` | "Same for WhatsApp: a draft with the health score and warranty status. I approve it, the link opens WhatsApp, and I still tap send myself." *(Click the wa.me link so WhatsApp Web opens with the text filled in. Do not send.)* |
+| 4i *(optional, only if `ELEVENLABS_API_KEY` is set)* | `Read me that summary in Hindi.` | `speak_summary` | "And it can speak the summary, in English, Hindi or Tamil." *(Play the mp3 from `outbox/`.)* |
+
+**Caption to keep on screen during 4b–4c:** *Demo clips are synthetic, generated by `make_samples.py`.*
+
+**Key line to land:** "Nothing gets written or sent without my yes."
+
+Tip: the `appliance_checkup` prompt (Claude Desktop's ➕ / prompts menu) runs this whole flow as one guided checkup: scan, check warranty, propose actions, ask before confirming. Show it for two seconds if you have time, otherwise mention it in section 5.
+
+## 5. Technical approach (2:30–3:10)
+
+| On screen | Spoken |
+|---|---|
+| Slide: the tool list (`register_appliance`, `list_appliances`, `set_baseline`, `scan_appliance`, `get_history`, `check_warranty`, `create_reminder`, `draft_technician_message`, `speak_summary`, prompt `appliance_checkup`). | "Under the hood, Hum is a Python MCP server with nine tools and one guided prompt, `appliance_checkup`." |
+| Slide: scoring pipeline: audio → 32 frequency bands + loudness + spectral centroid → compare with this appliance's baseline → health 0–100 + changed region. | "Scoring is signal processing, not a trained model yet: thirty-two frequency bands plus loudness, compared with that appliance's own healthy baseline." |
+| Slide: control model: **read tools run freely · write tools: preview → your yes → commit · WhatsApp: you tap send.** | "Read tools run freely. Every write tool returns a preview first and only commits with confirm equals true, after the user agrees." |
+| Architecture slide (User ↔ Claude Desktop ↔ Hum MCP server → scoring / appliance store / warranty → outbox: .ics, WhatsApp link, mp3). Then a "Limitations" box. | "Honest limits: it's a stethoscope, not an X-ray. It tells you which machine needs attention and how urgently, not which part broke. Best with a baseline from a new or just-serviced machine." |
+
+## 6. Why it matters + roadmap (3:10–3:40)
+
+| On screen | Spoken |
+|---|---|
+| Roadmap slide, each item tagged **Planned**: ElevenLabs phone voice agent connected to Hum over MCP (needs Hum hosted over HTTP first) · AWS-hosted remote MCP server (Lambda, S3, DynamoDB) · trained anomaly model on the public MIMII machine-sound dataset · 3D/VR view of your home's machines. | "Hum grew out of our industrial machine-health work, brought home. Next, we connect it to an ElevenLabs voice agent, so you can just call it and talk, in your own language. We plan to host it on AWS as a remote MCP server and train a real anomaly model on the public MIMII machine-sound dataset. And one day, you'll walk through your home's machines in 3D." |
+
+## 7. Close (3:40–3:55)
+
+| On screen | Spoken |
+|---|---|
+| Title card: **Hum** · GitHub repo link · Team [TEAM_NAME] · "Track 01: Make MCP Matter". | "Hum listens before things break, and acts only with your yes. Less magic, more utility. This is Hum." |
+
+---
+
+## Recording tips
+
+**Takes**
+- Record **one clean take** of the full demo (section 4), and a **separate backup screen recording** of the same flow in case the live take stumbles. Edit the voice-over onto whichever is cleaner.
+- Record sections 1–3 and 5–7 separately; they're easier to redo in short pieces.
+- Keep the final cut between **3:30 and 4:00**. Anything under 3:00 or over 5:00 breaks the rules.
+
+**Pre-recording checklist**
+- [ ] Clear old demo data so the flow starts fresh: empty `data/history.json` (set it to `[]`), delete everything inside `outbox/`, and remove `data/baselines/kitchen_mixer.json` if you want to show `set_baseline` live.
+- [ ] Run `python make_samples.py` so `samples/mixer_healthy.wav`, `samples/mixer_healthy_2.wav` and `samples/mixer_faulty.wav` exist.
+- [ ] Re-register / set the baseline off camera (or do it on camera if time allows).
+- [ ] **Fully quit and restart Claude Desktop** (from the system tray on Windows) so it reloads the Hum server, then check the tools icon lists all Hum tools.
+- [ ] Do one dry run of every prompt in section 4 and note the actual health numbers. Verified on the bundled samples: 91.8 healthy, 58.2 faulty. Update the spoken lines only if you swap in real recordings.
+- [ ] Close notifications, other chats, and anything personal on screen. Use placeholder technician numbers only.
+- [ ] Set screen resolution to 1920×1080 and zoom Claude Desktop so text is readable on a phone.
+
+**Audio**
+- Use a headset or lapel mic, not the laptop mic. Record in a quiet room with soft furnishings; switch off fans and the AC while talking.
+- Speak a little slower than feels natural; 140 words per minute is the pace this script is timed for.
+- **Playing the WAV samples on camera:** play `samples/mixer_healthy.wav` and then `samples/mixer_faulty.wav` for 2–3 seconds each (Windows Media Player, or drag into the editor timeline) so viewers hear the difference. Capture them as **system audio** in the screen recorder, not through the mic, so they're clean. Keep them quieter than your voice. Say or caption that they're synthetic.
+
+**After upload**
+- Set the YouTube video to **Unlisted** (or Public), never Private.
+- Open the link in an **incognito window** to confirm it plays without signing in.
+- Paste the link into the README and the PPT.
