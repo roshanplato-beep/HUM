@@ -189,8 +189,5 @@ hum/
 
 ## Team
 
-**[TEAM_NAME]** · wHACKiest 2026, Track 01
+Boss Babies · wHACKiest 2026, Track 01
 
-## License
-
-[MIT](LICENSE)

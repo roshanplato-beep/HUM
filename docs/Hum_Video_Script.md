@@ -1,6 +1,6 @@
 # Hum: Video Pitch Script
 
-**wHACKiest 2026 · Track 01: Make MCP Matter · Team [TEAM_NAME]**
+**wHACKiest 2026 · Track 01: Make MCP Matter · Team Boss Babies**
 
 - **Target length:** 3:45 (allowed range 3:00–5:00; aim for 3:30–4:00)
 - **Spoken words:** about 520, which runs about 3:45 at 140 words per minute including the demo pauses
@@ -72,7 +72,7 @@ Tip: the `appliance_checkup` prompt (Claude Desktop's ➕ / prompts menu) runs t
 
 | On screen | Spoken |
 |---|---|
-| Title card: **Hum** · GitHub repo link · Team [TEAM_NAME] · "Track 01: Make MCP Matter". | "Hum listens before things break, and acts only with your yes. Less magic, more utility. This is Hum." |
+| Title card: **Hum** · GitHub repo link · Team Boss Babies · "Track 01: Make MCP Matter". | "Hum listens before things break, and acts only with your yes. Less magic, more utility. This is Hum." |
 
 ---
 

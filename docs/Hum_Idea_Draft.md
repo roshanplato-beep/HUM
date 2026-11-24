@@ -2,7 +2,7 @@
 
 **Every machine hums before it breaks.**
 
-wHACKiest 2026 · Track 01: *Make MCP Matter* · Team: **[TEAM_NAME]**
+wHACKiest 2026 · Track 01: *Make MCP Matter* · Team: **Boss Babies**
 
 > **Fact-check notes on the build brief (checked 24 Nov 2026 against the sources in §17)**
 >
